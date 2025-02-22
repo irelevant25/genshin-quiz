@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="data.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <script src="quiz-manager.js"></script>
+    <script src="background-image.js"></script>
+</head>
+
+<body>
+    <nav>
+        <ul>
+            <li onclick="menuItemClick(this)" data-id="quiz-banners">
+                <a>Banners</a>
+            </li>
+            <li onclick="menuItemClick(this)" data-id="background-image">
+                <a>Background</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div id="quiz-banners" class="container text-center p-3" style="display: none;">
+        <img name="question" class="d-block mx-auto">
+        <div class="pt-3" style="display: inline-flex;">
+            <div name="autocomplete" class="position-relative" style="width: 300px;">
+                <input type="text" class="form-control" placeholder="Search...">
+                <div class="dropdown-menu autocomplete-dropdown"></div>
+            </div>
+            <button class="btn btn-primary ms-3" style="height: fit-content;">Next</button>
+        </div><br>
+        <div class="d-flex justify-content-center" name="tries-score">Tries:
+            <p name="tries-current" class="ms-1">0</p>
+            /
+            <p name="tries-max">5</p>
+        </div>
+        <div name="tries-display" class="mb-3 d-flex justify-content-center tries-icons">
+            <div class="try">
+            </div>
+            <div class="try">
+            </div>
+            <div class="try">
+            </div>
+            <div class="try">
+            </div>
+            <div class="try">
+            </div>
+        </div>
+        <img name="answer-success" class="d-block mx-auto" style="max-height: 700px;">
+    </div>
+
+    <div id="background-image" class="container text-center p-3" style="display: none;">
+    </div>
+
+    <script>
+        function getRandomInt(min, max) {
+            return Math.round(Math.random() * (max - min) + min);
+        }
+
+        function getRandomCharacter() {
+            return data[getRandomInt(0, data.length - 1)];
+        }
+
+        function menuItemClick(menuItem) {
+            // deactivate other menu items
+            document.querySelectorAll("nav > ul > li").forEach(element => {
+                if (element !== menuItem) {
+                    element.classList.remove('active');
+                }
+            });
+            // activate this menu item
+            menuItem.classList.toggle('active');
+
+            // hide other content
+            const content = document.querySelector('#' + menuItem.dataset.id);
+            document.querySelectorAll("div.container").forEach(element => {
+                if (element !== content) {
+                    element.style.display = 'none';
+                }
+            });
+            // toggle this content
+            content.style.display = content.style.display === 'none' ? 'inherit' : 'none';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            new QuizManager('quiz-banners').init();
+            new BackgroundManager('background-image').init();
+        });
+    </script>
+</body>
+
+</html>
